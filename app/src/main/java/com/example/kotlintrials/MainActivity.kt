@@ -17,6 +17,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        setContentView(R.layout.activity_main)
+        /*
         setContent {
             KotlinTrialsTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -26,10 +28,10 @@ class MainActivity : ComponentActivity() {
                     )
                 }
             }
-        }
+        }*/
     }
 }
-
+/*
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
@@ -44,4 +46,4 @@ fun GreetingPreview() {
     KotlinTrialsTheme {
         Greeting("Android")
     }
-}
+}*/
