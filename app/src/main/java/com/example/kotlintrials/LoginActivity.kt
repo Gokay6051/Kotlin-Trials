@@ -15,40 +15,41 @@ class LoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        preferences = getSharedPreferences("UserData", MODE_PRIVATE)
-        val isLoggedIn = preferences.getBoolean("isLoggedIn", false)
 
-        if (isLoggedIn) {
+
+        //Burayı kaldırınca da çalışabilir
+        /*
+        if (MainActivity.isLoggedIn) {
             intent = Intent(applicationContext, MainActivity::class.java)
             startActivity(intent)
             finish() // Finish the current activity to prevent going back to it
         }
-
-        binding = ActivityLoginBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        */
 
         binding.buttonLogin.setOnClickListener() {
-            val _userName = preferences.getString("userName", "")
-            val _password = preferences.getString("password", "")
-
             val userName = binding.editTextUserName.text.toString()
             val password = binding.editTextPassword.text.toString()
 
-            if (userName == _userName && password == _password) {
-                with(preferences.edit()){
-                    putBoolean("isLoggedIn", true)
-                    apply()
+            if(userName.isNotEmpty() && password.isNotEmpty()){
+                MainActivity.auth.signInWithEmailAndPassword(userName, password).addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        binding.editTextUserName.text.clear()
+                        binding.editTextPassword.text.clear()
+                        Toast.makeText(applicationContext, "User sign in successfully", Toast.LENGTH_LONG).show()
+                        intent = Intent(applicationContext, MainActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
+                }.addOnFailureListener() {
+                    Toast.makeText(applicationContext, it.localizedMessage, Toast.LENGTH_LONG).show()
                 }
-                intent = Intent(applicationContext, MainActivity::class.java)
-                startActivity(intent)
-                finish() // Finish the current activity to prevent going back to it
             }
-            else {
-                Toast.makeText(applicationContext, "Invalid Credentials", Toast.LENGTH_LONG).show()
+            else{
+                Toast.makeText(applicationContext, "Please fill all fields", Toast.LENGTH_LONG).show()
             }
-            binding.editTextUserName.text.clear()
-            binding.editTextPassword.text.clear()
         }
 
         binding.buttonRegister.setOnClickListener() {
