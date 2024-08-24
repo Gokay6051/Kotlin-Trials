@@ -7,20 +7,8 @@ import android.os.Bundle
 import android.view.WindowInsetsController
 import android.widget.Toast
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.annotation.RequiresApi
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.kotlintrials.databinding.ActivityMainBinding
-import com.example.kotlintrials.ui.theme.KotlinTrialsTheme
 
 class MainActivity : ComponentActivity() {
     lateinit var binding: ActivityMainBinding
@@ -29,31 +17,36 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
         binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
         preferences = getSharedPreferences("UserData", MODE_PRIVATE)
-        binding.buttonLogin.setOnClickListener() {
-            var _userName = preferences.getString("userName", "")
-            var _password = preferences.getString("password", "")
+        val isLoggedIn = preferences.getBoolean("isLoggedIn", false)
 
-            var userName = binding.editTextUserName.text.toString()
-            var password = binding.editTextPassword.text.toString()
+        Toast.makeText(
+            applicationContext,
+            "isLoggedIn: $isLoggedIn",
+            Toast.LENGTH_LONG
+        ).show()
 
-            if (userName == _userName && password == _password) {
-                intent = Intent(applicationContext, WelcomeActivity::class.java)
-                startActivity(intent)
-            }
-            else {
-                Toast.makeText(applicationContext, "Invalid Credentials", Toast.LENGTH_LONG).show()
-            }
-            binding.editTextUserName.text.clear()
-            binding.editTextPassword.text.clear()
+        if (!isLoggedIn) {
+            intent = Intent(applicationContext, LoginActivity::class.java)
+            startActivity(intent)
+            finish() // Finish the current activity to prevent going back to it
         }
 
-        binding.buttonRegister.setOnClickListener() {
-            intent = Intent(applicationContext, RegisterActivity::class.java)
+        var userName = preferences.getString("userName", "")
+        var password = preferences.getString("password", "")
+        binding.textViewUserMain.text = "User Name:  $userName"
+        binding.textViewPasswordMain.text = "Password:  $password"
+
+        setContentView(binding.root)
+
+        binding.buttonLogoutMain.setOnClickListener {
+            with(preferences.edit()){
+                putBoolean("isLoggedIn", false)
+                apply()
+            }
+            intent = Intent(applicationContext, LoginActivity::class.java)
             startActivity(intent)
         }
     }

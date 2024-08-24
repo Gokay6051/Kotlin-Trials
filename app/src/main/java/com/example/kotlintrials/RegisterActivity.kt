@@ -5,9 +5,6 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.kotlintrials.databinding.ActivityRegisterBinding
 
 class RegisterActivity : ComponentActivity() {
@@ -30,14 +27,15 @@ class RegisterActivity : ComponentActivity() {
             Toast.makeText(applicationContext, "Data Saved, please log in", Toast.LENGTH_LONG).show()
             binding.editTextUserNameRegister.text.clear()
             binding.editTextPasswordRegister.text.clear()
-            intent = Intent(applicationContext, MainActivity::class.java)
+            intent = Intent(applicationContext, LoginActivity::class.java)
             startActivity(intent)
         }
 
 
         binding.buttonLoginPageRegister.setOnClickListener(){
-            intent = Intent(applicationContext, MainActivity::class.java)
+            intent = Intent(applicationContext, LoginActivity::class.java)
             startActivity(intent)
+            finish()
         }
     }
 }
