@@ -43,8 +43,8 @@
 
     <EditText
         android:id="@+id/editTextUserName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="318dp"
+        android:layout_height="56dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/edit_text_background"
@@ -53,8 +53,8 @@
         android:hint="Username"
         android:inputType="text"
         android:padding="10dp"
-        android:textColorHint="@color/hintColor"
         android:textColor="@color/hintColor"
+        android:textColorHint="@color/hintColor"
         android:textSize="20sp"
         android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -65,7 +65,7 @@
 
     <EditText
         android:id="@+id/editTextPassword"
-        android:layout_width="wrap_content"
+        android:layout_width="318dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
@@ -75,8 +75,8 @@
         android:hint="Password"
         android:inputType="text"
         android:padding="10dp"
-        android:textColorHint="@color/hintColor"
         android:textColor="@color/hintColor"
+        android:textColorHint="@color/hintColor"
         android:textSize="20sp"
         android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"

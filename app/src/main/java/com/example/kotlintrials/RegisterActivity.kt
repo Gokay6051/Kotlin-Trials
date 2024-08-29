@@ -9,10 +9,11 @@ import com.example.kotlintrials.databinding.ActivityRegisterBinding
 
 class RegisterActivity : ComponentActivity() {
     lateinit var binding: ActivityRegisterBinding
+    private val firebaseManagement = FirebaseManagement()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -21,7 +22,7 @@ class RegisterActivity : ComponentActivity() {
             var password = binding.editTextPasswordRegister.text.toString()
 
             if(userName.isNotEmpty() && password.isNotEmpty()){
-                MainActivity.auth.createUserWithEmailAndPassword(userName, password).addOnCompleteListener {
+                firebaseManagement.createUser(userName, password).addOnCompleteListener {
                     if (it.isSuccessful) {
                         binding.editTextUserNameRegister.text.clear()
                         binding.editTextPasswordRegister.text.clear()

@@ -14,41 +14,29 @@ import com.google.firebase.auth.FirebaseUser
 
 class MainActivity : ComponentActivity() {
     lateinit var binding: ActivityMainBinding
-    lateinit var preferences : SharedPreferences
-    companion object {
-        lateinit var auth : FirebaseAuth
-        val user = FirebaseAuth.getInstance().currentUser
-        val isLoggedIn = user != null
-    }
+    private val firebaseManagement = FirebaseManagement()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        auth = FirebaseAuth.getInstance()
-
-        Toast.makeText(
-            applicationContext,
-            "isLoggedIn: $isLoggedIn",
-            Toast.LENGTH_LONG
-        ).show()
-        /*
-        if (!isLoggedIn) {
+        if(firebaseManagement.isLoggedIn() == false){
+            Toast.makeText(applicationContext, "${firebaseManagement.isLoggedIn().toString()}", Toast.LENGTH_SHORT).show()
             intent = Intent(applicationContext, LoginActivity::class.java)
             startActivity(intent)
-            finish() // Finish the current activity to prevent going back to it
-        }*/
+            finish()
+        }
 
+        val user = firebaseManagement.getCurrentUser()
         val userName = user?.email ?: "Unknown"
         val password = user?.uid ?: "Unknown"
         binding.textViewUserMain.text = "User Name:  $userName"
         binding.textViewPasswordMain.text = "Password:  $password"
 
-        setContentView(binding.root)
-
         binding.buttonLogoutMain.setOnClickListener {
-            auth.signOut() // Firebase'den çıkış yap
+            firebaseManagement.signOut() // Firebase'den çıkış yap
             intent = Intent(applicationContext, LoginActivity::class.java)
             startActivity(intent)
             finish() // Mevcut aktiviteyi kapat
