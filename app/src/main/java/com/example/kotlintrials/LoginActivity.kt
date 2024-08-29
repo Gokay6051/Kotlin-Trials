@@ -41,6 +41,14 @@ class LoginActivity : ComponentActivity() {
             }
         }
 
+        binding.checkBoxShowPassword.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                binding.editTextPassword.transformationMethod = null
+            } else {
+                binding.editTextPassword.transformationMethod = android.text.method.PasswordTransformationMethod.getInstance()
+            }
+        }
+
         binding.buttonRegister.setOnClickListener() {
             intent = Intent(applicationContext, RegisterActivity::class.java)
             startActivity(intent)
