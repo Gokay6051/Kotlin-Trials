@@ -2,14 +2,18 @@ package com.example.kotlintrials
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
+import com.example.kotlintrials.dataClasses.User
 import com.example.kotlintrials.databinding.ActivityRegisterBinding
+import com.google.firebase.firestore.FirebaseFirestore
 
 class RegisterActivity : ComponentActivity() {
     lateinit var binding: ActivityRegisterBinding
     private val firebaseManagement = FirebaseManagement()
+    private lateinit var db: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,42 +21,65 @@ class RegisterActivity : ComponentActivity() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.buttonSaveRegister.setOnClickListener {
-            var userName = binding.editTextUserNameRegister.text.toString()
-            var password = binding.editTextPasswordRegister.text.toString()
+        // Initialize Firestore
+        db = FirebaseFirestore.getInstance()
 
-            if(userName.isNotEmpty() && password.isNotEmpty()){
+        binding.buttonSaveRegister.setOnClickListener {
+            val userName = binding.editTextUserNameRegister.text.toString()
+            val password = binding.editTextPasswordRegister.text.toString()
+
+            if (userName.isNotEmpty() && password.isNotEmpty()) {
                 firebaseManagement.createUser(userName, password).addOnCompleteListener {
                     if (it.isSuccessful) {
-                        binding.editTextUserNameRegister.text.clear()
-                        binding.editTextPasswordRegister.text.clear()
-                        Toast.makeText(applicationContext, "User created successfully", Toast.LENGTH_LONG).show()
-                        intent = Intent(applicationContext, LoginActivity::class.java)
-                        startActivity(intent)
-                        finish()
+                        addUserDb(firebaseManagement, db)
+                    } else {
+                        Toast.makeText(applicationContext, it.exception?.localizedMessage, Toast.LENGTH_LONG).show()
                     }
-                }.addOnFailureListener() {
-                    Toast.makeText(applicationContext, it.localizedMessage, Toast.LENGTH_LONG).show()
                 }
-            }
-            else{
+            } else {
                 Toast.makeText(applicationContext, "Please fill all fields", Toast.LENGTH_LONG).show()
             }
-
         }
 
-        binding.checkBoxShowPasswordRegister.setOnCheckedChangeListener { buttonView, isChecked ->
+        binding.checkBoxShowPasswordRegister.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 binding.editTextPasswordRegister.transformationMethod = null
             } else {
                 binding.editTextPasswordRegister.transformationMethod = android.text.method.PasswordTransformationMethod.getInstance()
             }
         }
-        
-        binding.buttonLoginPageRegister.setOnClickListener(){
+
+        binding.buttonLoginPageRegister.setOnClickListener {
             intent = Intent(applicationContext, LoginActivity::class.java)
             startActivity(intent)
             finish()
+        }
+    }
+
+    private fun addUserDb(firebaseManagement: FirebaseManagement, db: FirebaseFirestore) {
+        val user = firebaseManagement.getCurrentUser()
+        val userId = user?.uid ?: "Unknown"
+
+        if (userId != "Unknown") {
+            val userData = User(
+                uid = userId,
+                email = binding.editTextUserNameRegister.text.toString(),
+            )
+            db.collection("users")
+                .add(userData)
+                .addOnSuccessListener { documentReference ->
+                    Log.d("RegisterActivity", "DocumentSnapshot added with ID: ${documentReference.id}")
+                    binding.editTextUserNameRegister.text.clear()
+                    binding.editTextPasswordRegister.text.clear()
+                    Toast.makeText(applicationContext, "User created successfully", Toast.LENGTH_LONG).show()
+                    intent = Intent(applicationContext, LoginActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+                .addOnFailureListener { e ->
+                    Log.w("RegisterActivity", "Error adding document", e)
+                    Toast.makeText(applicationContext, e.localizedMessage, Toast.LENGTH_LONG).show()
+                }
         }
     }
 }
