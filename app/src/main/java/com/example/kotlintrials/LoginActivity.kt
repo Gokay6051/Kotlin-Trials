@@ -6,11 +6,11 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
+import com.example.kotlintrials.MainActivity.Companion.firebaseManagement
 import com.example.kotlintrials.databinding.ActivityLoginBinding
 
 class LoginActivity : ComponentActivity() {
     lateinit var binding: ActivityLoginBinding
-    private val firebaseManagement = FirebaseManagement()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

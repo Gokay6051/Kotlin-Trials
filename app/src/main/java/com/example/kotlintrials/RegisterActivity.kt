@@ -6,14 +6,14 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
+import com.example.kotlintrials.MainActivity.Companion.db
+import com.example.kotlintrials.MainActivity.Companion.firebaseManagement
 import com.example.kotlintrials.dataClasses.User
 import com.example.kotlintrials.databinding.ActivityRegisterBinding
 import com.google.firebase.firestore.FirebaseFirestore
 
 class RegisterActivity : ComponentActivity() {
     lateinit var binding: ActivityRegisterBinding
-    private val firebaseManagement = FirebaseManagement()
-    private lateinit var db: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

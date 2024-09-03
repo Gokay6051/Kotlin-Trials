@@ -11,10 +11,15 @@ import androidx.activity.enableEdgeToEdge
 import com.example.kotlintrials.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
 
 class MainActivity : ComponentActivity() {
     lateinit var binding: ActivityMainBinding
-    private val firebaseManagement = FirebaseManagement()
+    companion object{
+        val firebaseManagement = FirebaseManagement()
+        lateinit var db: FirebaseFirestore
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
