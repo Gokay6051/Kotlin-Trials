@@ -64,6 +64,8 @@ class RegisterActivity : ComponentActivity() {
             val userData = User(
                 uid = userId,
                 email = binding.editTextUserNameRegister.text.toString(),
+                userName = binding.editTextUserNameRegister.text.toString(),
+                profileImageUrl = ""
             )
             db.collection("users")
                 .add(userData)
