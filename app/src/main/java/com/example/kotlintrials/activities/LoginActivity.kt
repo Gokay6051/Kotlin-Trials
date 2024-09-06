@@ -1,12 +1,11 @@
-package com.example.kotlintrials
+package com.example.kotlintrials.activities
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
-import com.example.kotlintrials.MainActivity.Companion.firebaseManagement
+import com.example.kotlintrials.activities.MainActivity.Companion.firebaseManagement
 import com.example.kotlintrials.databinding.ActivityLoginBinding
 
 class LoginActivity : ComponentActivity() {

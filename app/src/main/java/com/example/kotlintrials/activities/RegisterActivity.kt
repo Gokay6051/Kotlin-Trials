@@ -1,4 +1,4 @@
-package com.example.kotlintrials
+package com.example.kotlintrials.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,8 +6,9 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
-import com.example.kotlintrials.MainActivity.Companion.db
-import com.example.kotlintrials.MainActivity.Companion.firebaseManagement
+import com.example.kotlintrials.FirebaseManagement
+import com.example.kotlintrials.activities.MainActivity.Companion.db
+import com.example.kotlintrials.activities.MainActivity.Companion.firebaseManagement
 import com.example.kotlintrials.dataClasses.User
 import com.example.kotlintrials.databinding.ActivityRegisterBinding
 import com.google.firebase.firestore.FirebaseFirestore
