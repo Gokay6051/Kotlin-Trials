@@ -14,7 +14,10 @@ import com.example.kotlintrials.databinding.ActivityRegisterBinding
 import com.google.firebase.firestore.FirebaseFirestore
 
 class RegisterActivity : ComponentActivity() {
-    lateinit var binding: ActivityRegisterBinding
+    private lateinit var binding: ActivityRegisterBinding
+    private  lateinit var userName: String
+    private lateinit var password: String
+    private lateinit var alrtDialog: android.app.AlertDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,13 +29,13 @@ class RegisterActivity : ComponentActivity() {
         db = FirebaseFirestore.getInstance()
 
         binding.buttonSaveRegister.setOnClickListener {
-            val userName = binding.editTextUserNameRegister.text.toString()
-            val password = binding.editTextPasswordRegister.text.toString()
+            userName = binding.editTextUserNameRegister.text.toString()
+            password = binding.editTextPasswordRegister.text.toString()
 
             if (userName.isNotEmpty() && password.isNotEmpty()) {
                 firebaseManagement.createUser(userName, password).addOnCompleteListener {
                     if (it.isSuccessful) {
-                        addUserDb(firebaseManagement, db)
+                        addUserDb()
                     } else {
                         Toast.makeText(applicationContext, it.exception?.localizedMessage, Toast.LENGTH_LONG).show()
                     }
@@ -57,7 +60,7 @@ class RegisterActivity : ComponentActivity() {
         }
     }
 
-    private fun addUserDb(firebaseManagement: FirebaseManagement, db: FirebaseFirestore) {
+    private fun addUserDb() {
         val user = firebaseManagement.getCurrentUser()
         val userId = user?.uid ?: "Unknown"
 
@@ -71,6 +74,8 @@ class RegisterActivity : ComponentActivity() {
             db.collection("users")
                 .add(userData)
                 .addOnSuccessListener { documentReference ->
+                    alertMessage()
+
                     Log.d("RegisterActivity", "DocumentSnapshot added with ID: ${documentReference.id}")
                     binding.editTextUserNameRegister.text.clear()
                     binding.editTextPasswordRegister.text.clear()
@@ -84,5 +89,14 @@ class RegisterActivity : ComponentActivity() {
                     Toast.makeText(applicationContext, e.localizedMessage, Toast.LENGTH_LONG).show()
                 }
         }
+    }
+
+    private fun alertMessage() {
+        alrtDialog = android.app.AlertDialog.Builder(this)
+            .setTitle("Signing up")
+            .setMessage("Please wait...")
+            .setCancelable(false)
+            .create()
+        alrtDialog.show()
     }
 }

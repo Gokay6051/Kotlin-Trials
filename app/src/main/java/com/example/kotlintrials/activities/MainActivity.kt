@@ -12,7 +12,9 @@ import com.example.kotlintrials.databinding.ActivityMainBinding
 import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : ComponentActivity() {
-    lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var alrtDialog: android.app.AlertDialog
+
     companion object {
         val firebaseManagement = FirebaseManagement()
         lateinit var db: FirebaseFirestore
@@ -35,13 +37,23 @@ class MainActivity : ComponentActivity() {
 
         displayCurrentUser(db)
 
-
         binding.buttonLogoutMain.setOnClickListener {
-            firebaseManagement.signOut()
-            intent = Intent(applicationContext, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
-            Toast.makeText(applicationContext, "Logged out", Toast.LENGTH_SHORT).show()
+            alrtDialog = android.app.AlertDialog.Builder(this).create()
+            alrtDialog.setTitle("Are you sure you want to log out?")
+            alrtDialog.setCancelable(false)
+
+            alrtDialog.setButton(android.app.AlertDialog.BUTTON_POSITIVE, "Yes") { _, _ ->
+                firebaseManagement.signOut()
+                intent = Intent(applicationContext, LoginActivity::class.java)
+                startActivity(intent)
+                finish()
+                Toast.makeText(applicationContext, "Logged out", Toast.LENGTH_SHORT).show()
+            }
+            alrtDialog.setButton(android.app.AlertDialog.BUTTON_NEGATIVE, "No") { _, _ ->
+                alrtDialog.dismiss()
+            }
+
+            alrtDialog.show()
         }
     }
 
