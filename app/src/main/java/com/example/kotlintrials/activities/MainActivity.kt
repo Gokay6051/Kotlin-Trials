@@ -38,24 +38,29 @@ class MainActivity : ComponentActivity() {
         displayCurrentUser(db)
 
         binding.buttonLogoutMain.setOnClickListener {
-            alrtDialog = android.app.AlertDialog.Builder(this).create()
-            alrtDialog.setTitle("Are you sure you want to log out?")
-            alrtDialog.setCancelable(false)
-
-            alrtDialog.setButton(android.app.AlertDialog.BUTTON_POSITIVE, "Yes") { _, _ ->
-                firebaseManagement.signOut()
-                intent = Intent(applicationContext, LoginActivity::class.java)
-                startActivity(intent)
-                finish()
-                Toast.makeText(applicationContext, "Logged out", Toast.LENGTH_SHORT).show()
-            }
-            alrtDialog.setButton(android.app.AlertDialog.BUTTON_NEGATIVE, "No") { _, _ ->
-                alrtDialog.dismiss()
-            }
-
-            alrtDialog.show()
+            logOut()
         }
     }
+
+    private fun logOut() {
+        alrtDialog = android.app.AlertDialog.Builder(this).create()
+        alrtDialog.setTitle("Are you sure you want to log out?")
+        alrtDialog.setCancelable(false)
+
+        alrtDialog.setButton(android.app.AlertDialog.BUTTON_POSITIVE, "Yes") { _, _ ->
+            firebaseManagement.signOut()
+            intent = Intent(applicationContext, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+            Toast.makeText(applicationContext, "Logged out", Toast.LENGTH_SHORT).show()
+        }
+        alrtDialog.setButton(android.app.AlertDialog.BUTTON_NEGATIVE, "No") { _, _ ->
+            alrtDialog.dismiss()
+        }
+
+        alrtDialog.show()
+    }
+
 
     private fun displayCurrentUser(db: FirebaseFirestore) {
         val firebase = firebaseManagement.getCurrentUser()
