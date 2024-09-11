@@ -6,12 +6,14 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
 import com.example.kotlintrials.FirebaseManagement
 import com.example.kotlintrials.dataClasses.User
 import com.example.kotlintrials.databinding.ActivityMainBinding
+import com.example.kotlintrials.fragments.HomeFragment
 import com.google.firebase.firestore.FirebaseFirestore
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var alrtDialog: android.app.AlertDialog
 
@@ -22,7 +24,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -35,13 +36,20 @@ class MainActivity : ComponentActivity() {
             finish()
         }
 
-        displayCurrentUser(db)
+        //displayCurrentUser(db)
 
+        //Display Home Fragment
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        fragmentTransaction.replace(binding.fragmentContainerMain.id, HomeFragment())
+        fragmentTransaction.commit()
+/*
         binding.buttonLogoutMain.setOnClickListener {
             logOut()
         }
-    }
 
+ */
+    }
+/*
     private fun logOut() {
         alrtDialog = android.app.AlertDialog.Builder(this).create()
         alrtDialog.setTitle("Are you sure you want to log out?")
@@ -61,7 +69,9 @@ class MainActivity : ComponentActivity() {
         alrtDialog.show()
     }
 
+ */
 
+/*
     private fun displayCurrentUser(db: FirebaseFirestore) {
         val firebase = firebaseManagement.getCurrentUser()
         val uid = firebase?.uid ?: return
@@ -95,4 +105,6 @@ class MainActivity : ComponentActivity() {
             }
 
     }
+
+ */
 }

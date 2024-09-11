@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -8,70 +9,14 @@
     android:background="@color/iaConstraintColor"
     tools:context=".activities.MainActivity">
 
-    <ImageView
-        android:id="@+id/imageViewLoginPageMain"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="91dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="37dp"
-        android:src="@drawable/logo"
-        app:layout_constraintBottom_toTopOf="@+id/textViewWelcomeMain"
+    <!-- Fragment için container -->
+    <FrameLayout
+        android:id="@+id/fragmentContainerMain"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textViewWelcomeMain"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="42dp"
-        android:text="Welcome"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/textViewUserMain"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/textViewUserMain"
-        android:layout_width="318dp"
-        android:layout_height="27dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="11dp"
-        android:text="User:"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/textViewPasswordMain"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/textViewPasswordMain"
-        android:layout_width="318dp"
-        android:layout_height="26dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="231dp"
-        android:text="Password:"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonLogoutMain"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/buttonLogoutMain"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="106dp"
-        android:background="@drawable/button_background"
-        android:text="Log out"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

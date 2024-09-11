@@ -1,5 +1,6 @@
 package com.example.kotlintrials.mvvm
 
+import android.util.Log
 import com.example.kotlintrials.modal.Users
 import com.google.firebase.firestore.FirebaseFirestore
 import androidx.lifecycle.LiveData
@@ -15,6 +16,10 @@ class UsersRepo {
             fireStore.collection("Users").addSnapshotListener { snapshot, exception ->
                 if (exception != null) {
                     return@addSnapshotListener
+                    Log.d("UsersRepo", "getUsers: ${exception.message}")
+                }
+                else {
+                    Log.d("UsersRepo", "getUsers: ${snapshot?.documents}")
                 }
 
                 val usersList = ArrayList<Users>()

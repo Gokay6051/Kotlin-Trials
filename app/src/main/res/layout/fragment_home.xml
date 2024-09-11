@@ -13,7 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:id="@+id/toolbarMain"
-            android:background="#191970">
+            android:background="@color/iaConstraintColor">
 
 
             <TextView
@@ -67,7 +67,7 @@
 
 
         <androidx.cardview.widget.CardView
-            android:backgroundTint="@color/midnightblue"
+            android:backgroundTint="@color/iaConstraintColor"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:cardElevation="8dp"
