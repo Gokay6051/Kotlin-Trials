@@ -11,6 +11,7 @@ import com.example.kotlintrials.activities.MainActivity.Companion.db
 import com.example.kotlintrials.activities.MainActivity.Companion.firebaseManagement
 import com.example.kotlintrials.dataClasses.User
 import com.example.kotlintrials.databinding.ActivityRegisterBinding
+import com.example.kotlintrials.modal.Users
 import com.google.firebase.firestore.FirebaseFirestore
 
 class RegisterActivity : ComponentActivity() {
@@ -65,7 +66,7 @@ class RegisterActivity : ComponentActivity() {
         val userId = user?.uid ?: "Unknown"
 
         if (userId != "Unknown") {
-            val userData = User(
+            val userData = Users(
                 uid = userId,
                 email = binding.editTextUserNameRegister.text.toString(),
                 userName = binding.editTextUserNameRegister.text.toString(),
