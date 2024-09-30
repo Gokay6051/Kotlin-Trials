@@ -1,5 +1,6 @@
 package com.example.kotlintrials.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,6 +49,7 @@ class UserAdapter : RecyclerView.Adapter<UserHolder>() {
 
     fun setUserList(list: List<Users>) {
         this.listOfUsers = list
+        Log.d("UserAdapter", "User list updated, size: ${list.size}")
         notifyDataSetChanged()
     }
 

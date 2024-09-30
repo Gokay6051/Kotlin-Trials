@@ -15,7 +15,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var alrtDialog: android.app.AlertDialog
 
     companion object {
         val firebaseManagement = FirebaseManagement()
