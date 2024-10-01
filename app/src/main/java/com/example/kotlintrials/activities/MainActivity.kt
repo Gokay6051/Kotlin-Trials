@@ -7,7 +7,10 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import com.example.kotlintrials.FirebaseManagement
+import com.example.kotlintrials.R
 import com.example.kotlintrials.dataClasses.User
 import com.example.kotlintrials.databinding.ActivityMainBinding
 import com.example.kotlintrials.fragments.HomeFragment
@@ -15,6 +18,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var navController: NavController
 
     companion object {
         val firebaseManagement = FirebaseManagement()
@@ -26,6 +30,10 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val navHostFrag = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navController = navHostFrag.navController
+
+
         db = FirebaseFirestore.getInstance()
 
         if (!firebaseManagement.isLoggedIn()) {
@@ -34,41 +42,21 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
-
-        //displayCurrentUser(db)
-
-        //Display Home Fragment
-        val fragmentTransaction = supportFragmentManager.beginTransaction()
-        fragmentTransaction.replace(binding.fragmentContainerMain.id, HomeFragment())
-        fragmentTransaction.commit()
-/*
-        binding.buttonLogoutMain.setOnClickListener {
-            logOut()
-        }
-
- */
-    }
-/*
-    private fun logOut() {
-        alrtDialog = android.app.AlertDialog.Builder(this).create()
-        alrtDialog.setTitle("Are you sure you want to log out?")
-        alrtDialog.setCancelable(false)
-
-        alrtDialog.setButton(android.app.AlertDialog.BUTTON_POSITIVE, "Yes") { _, _ ->
-            firebaseManagement.signOut()
-            intent = Intent(applicationContext, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
-            Toast.makeText(applicationContext, "Logged out", Toast.LENGTH_SHORT).show()
-        }
-        alrtDialog.setButton(android.app.AlertDialog.BUTTON_NEGATIVE, "No") { _, _ ->
-            alrtDialog.dismiss()
-        }
-
-        alrtDialog.show()
     }
 
- */
+    override fun onBackPressed() {
+        if(supportFragmentManager.backStackEntryCount > 0) {
+            super.onBackPressed()
+        }
+        else {
+            if(navController.currentDestination?.id == R.id.homeFragment) {
+                moveTaskToBack(true)
+            }
+            else {
+                super.onBackPressed()
+            }
+        }
+    }
 
 /*
     private fun displayCurrentUser(db: FirebaseFirestore) {

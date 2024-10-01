@@ -32,7 +32,6 @@ class UsersRepo {
                     if(user!!.uid != Utils.getUiLoggedIn()){
                         users.let { usersList.add(user) }
                     }
-                    //UsersList olusuyor ama recyclerView da gosterilmiyor
                     Log.d("UsersList", "Kullanıcı Listesi: $usersList")
 
                     users.value = usersList

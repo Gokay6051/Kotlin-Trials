@@ -17,14 +17,20 @@ import com.example.kotlintrials.databinding.FragmentHomeBinding
 import com.example.kotlintrials.mvvm.ChatAppViewModel
 import kotlin.math.log
 import android.widget.Toast
+import android.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kotlintrials.activities.LoginActivity
+import com.example.kotlintrials.adapters.OnUserClickListener
+import com.example.kotlintrials.modal.Users
+import de.hdodenhof.circleimageview.CircleImageView
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), OnUserClickListener {
     lateinit var rvUsers : RecyclerView
     lateinit var userAdapter: UserAdapter
     lateinit var userViewModel: ChatAppViewModel
     lateinit var homeBinding: FragmentHomeBinding
+    lateinit var toolbar: Toolbar
+    lateinit var circleImageView: CircleImageView
     private lateinit var alrtDialog: android.app.AlertDialog
 
     override fun onCreateView(
@@ -41,12 +47,19 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         userViewModel = ChatAppViewModel()
         userAdapter = UserAdapter()
+        //Bu kısım uygulamayı patlatıyor, tamamlanmadığı için olabilir
+        /*
+        toolbar = view.findViewById(R.id.toolbarMain)
+        circleImageView = toolbar.findViewById(R.id.tlImage)
+        homeBinding.lifecycleOwner = viewLifecycleOwner
+        */
         rvUsers = homeBinding.rvUsers
         rvUsers.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false) //added
         rvUsers.adapter = userAdapter
         userViewModel.getUsers().observe(viewLifecycleOwner, {
             Log.d("HomeFragment", "Gelen kullanıcılar: $it")
             userAdapter.setUserList(it)
+            userAdapter.setOnUserClickListener(this)
         })
 
         homeBinding.logOut.setOnClickListener {
@@ -69,5 +82,9 @@ class HomeFragment : Fragment() {
         }
 
         alrtDialog.show()
+    }
+
+    override fun onUserSelected(position: Int, users: Users) {
+
     }
 }
