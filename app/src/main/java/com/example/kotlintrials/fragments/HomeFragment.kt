@@ -7,18 +7,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kotlintrials.R
 import com.example.kotlintrials.activities.MainActivity.Companion.firebaseManagement
 import com.example.kotlintrials.adapters.UserAdapter
-import com.example.kotlintrials.databinding.ActivityRegisterBinding
 import com.example.kotlintrials.databinding.FragmentHomeBinding
 import com.example.kotlintrials.mvvm.ChatAppViewModel
-import kotlin.math.log
 import android.widget.Toast
-import android.widget.Toolbar
+import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.kotlintrials.activities.LoginActivity
 import com.example.kotlintrials.adapters.OnUserClickListener
 import com.example.kotlintrials.modal.Users
@@ -47,12 +46,18 @@ class HomeFragment : Fragment(), OnUserClickListener {
         super.onViewCreated(view, savedInstanceState)
         userViewModel = ChatAppViewModel()
         userAdapter = UserAdapter()
+
         //Bu kısım uygulamayı patlatıyor, tamamlanmadığı için olabilir
-        /*
-        toolbar = view.findViewById(R.id.toolbarMain)
-        circleImageView = toolbar.findViewById(R.id.tlImage)
+        toolbar = view.findViewById(R.id.toolbarMain) ?: run {
+            Log.e("HomeFragment", "Toolbar not found!")
+            return
+        }
+        circleImageView = toolbar.findViewById(R.id.tlImage) ?: run {
+            Log.e("HomeFragment", "CircleImageView not found!")
+            return
+        }
         homeBinding.lifecycleOwner = viewLifecycleOwner
-        */
+
         rvUsers = homeBinding.rvUsers
         rvUsers.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false) //added
         rvUsers.adapter = userAdapter
@@ -65,6 +70,11 @@ class HomeFragment : Fragment(), OnUserClickListener {
         homeBinding.logOut.setOnClickListener {
             logOut()
         }
+
+        //Burası anlatılacak
+        userViewModel.imageUrl.observe(viewLifecycleOwner, Observer{
+            Glide.with(requireContext()).load(it).into(circleImageView)
+        })
     }
 
     private fun logOut() {

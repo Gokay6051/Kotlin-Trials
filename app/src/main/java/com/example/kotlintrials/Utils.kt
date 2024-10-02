@@ -8,7 +8,7 @@ class Utils {
         private var uid: String = ""
 
 
-        fun getUiLoggedIn(): String {
+        fun getUidLoggedIn(): String {
             if(auth.currentUser != null){
                 return auth.currentUser!!.uid
             }

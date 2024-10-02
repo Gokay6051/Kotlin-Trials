@@ -29,7 +29,7 @@ class UsersRepo {
                     val user = document.toObject(Users::class.java)
 
                     //all the users who not same as the user who has logged in add them to list
-                    if(user!!.uid != Utils.getUiLoggedIn()){
+                    if(user!!.uid != Utils.getUidLoggedIn()){
                         users.let { usersList.add(user) }
                     }
                     Log.d("UsersList", "Kullanıcı Listesi: $usersList")
