@@ -51,7 +51,7 @@ class LoginActivity : ComponentActivity() {
                     Toast.makeText(applicationContext, "User sign in successfully", Toast.LENGTH_LONG).show()
                     intent = Intent(applicationContext, MainActivity::class.java)
                     startActivity(intent)
-                    finish()
+                    finishAffinity()
                 }
             }.addOnFailureListener() {
                 Toast.makeText(applicationContext, it.localizedMessage, Toast.LENGTH_LONG).show()

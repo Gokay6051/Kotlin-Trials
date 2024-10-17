@@ -16,6 +16,7 @@ import com.example.kotlintrials.mvvm.ChatAppViewModel
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.kotlintrials.activities.LoginActivity
@@ -47,25 +48,20 @@ class HomeFragment : Fragment(), OnUserClickListener {
         userViewModel = ChatAppViewModel()
         userAdapter = UserAdapter()
 
-        //Bu kısım uygulamayı patlatıyor, tamamlanmadığı için olabilir
-        toolbar = view.findViewById(R.id.toolbarMain) ?: run {
-            Log.e("HomeFragment", "Toolbar not found!")
-            return
-        }
-        circleImageView = toolbar.findViewById(R.id.tlImage) ?: run {
-            Log.e("HomeFragment", "CircleImageView not found!")
-            return
-        }
+        toolbar = view.findViewById(R.id.toolbarMain)
+        circleImageView = toolbar.findViewById(R.id.tlImage)
         homeBinding.lifecycleOwner = viewLifecycleOwner
 
         rvUsers = homeBinding.rvUsers
         rvUsers.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false) //added
-        rvUsers.adapter = userAdapter
+
         userViewModel.getUsers().observe(viewLifecycleOwner, {
             Log.d("HomeFragment", "Gelen kullanıcılar: $it")
             userAdapter.setUserList(it)
-            userAdapter.setOnUserClickListener(this)
+            rvUsers.adapter = userAdapter
         })
+
+        userAdapter.setOnUserClickListener(this)
 
         homeBinding.logOut.setOnClickListener {
             logOut()
@@ -95,6 +91,8 @@ class HomeFragment : Fragment(), OnUserClickListener {
     }
 
     override fun onUserSelected(position: Int, users: Users) {
+        val action = HomeFragmentDirections.actionHomeFragmentToChatFragment(users)
+        view?.findNavController()?.navigate(action)
 
     }
 }
