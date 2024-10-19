@@ -33,13 +33,13 @@ class HomeFragment : Fragment(), OnUserClickListener {
     lateinit var circleImageView: CircleImageView
     private lateinit var alrtDialog: android.app.AlertDialog
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         homeBinding = FragmentHomeBinding.inflate(inflater, container, false)
-
         return homeBinding.root
     }
 

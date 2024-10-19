@@ -12,14 +12,18 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.kotlintrials.FirebaseManagement
 import com.example.kotlintrials.R
+import com.example.kotlintrials.Utils
 import com.example.kotlintrials.dataClasses.User
 import com.example.kotlintrials.databinding.ActivityMainBinding
 import com.example.kotlintrials.fragments.HomeFragment
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
+    private lateinit var auth: FirebaseAuth
+    private lateinit var firestore: FirebaseFirestore
 
     companion object {
         val firebaseManagement = FirebaseManagement()
@@ -30,6 +34,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        auth = FirebaseAuth.getInstance()
+        firestore = FirebaseFirestore.getInstance()
 
         val navHostFrag = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFrag.navController
@@ -42,6 +49,68 @@ class MainActivity : AppCompatActivity() {
             intent = Intent(applicationContext, LoginActivity::class.java)
             startActivity(intent)
             finish()
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        if (auth.currentUser != null) {
+            firestore.collection(("Users")).whereEqualTo("uid", Utils.getUidLoggedIn()).get()
+                .addOnSuccessListener { querySnapshot ->
+                    if (!querySnapshot.isEmpty) {
+                        val document = querySnapshot.documents[0] // İlk belgenin alınması
+                        document.reference.update("status", "online")
+                            .addOnSuccessListener { Log.d("MainActivity", "User status updated to online") }
+                            .addOnFailureListener { Log.d("MainActivity", "Error: ${it.localizedMessage}") }
+                    } else {
+                        Log.d("MainActivity", "Query snapshot is empty")
+                    }
+                }
+                .addOnFailureListener { Log.d("MainActivity", "Error: ${it.localizedMessage}") }
+        }
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+
+        if(auth.currentUser != null) {
+            if (auth.currentUser != null) {
+                firestore.collection(("Users")).whereEqualTo("uid", Utils.getUidLoggedIn()).get()
+                    .addOnSuccessListener { querySnapshot ->
+                        if (!querySnapshot.isEmpty) {
+                            val document = querySnapshot.documents[0] // İlk belgenin alınması
+                            document.reference.update("status", "online")
+                                .addOnSuccessListener { Log.d("MainActivity", "User status updated to online") }
+                                .addOnFailureListener { Log.d("MainActivity", "Error: ${it.localizedMessage}") }
+                        } else {
+                            Log.d("MainActivity", "Query snapshot is empty")
+                        }
+                    }
+                    .addOnFailureListener { Log.d("MainActivity", "Error: ${it.localizedMessage}") }
+            }
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        if(auth.currentUser != null) {
+            if (auth.currentUser != null) {
+                firestore.collection(("Users")).whereEqualTo("uid", Utils.getUidLoggedIn()).get()
+                    .addOnSuccessListener { querySnapshot ->
+                        if (!querySnapshot.isEmpty) {
+                            val document = querySnapshot.documents[0] // İlk belgenin alınması
+                            document.reference.update("status", "offline")
+                                .addOnSuccessListener { Log.d("MainActivity", "User status updated to online") }
+                                .addOnFailureListener { Log.d("MainActivity", "Error: ${it.localizedMessage}") }
+                        } else {
+                            Log.d("MainActivity", "Query snapshot is empty")
+                        }
+                    }
+                    .addOnFailureListener { Log.d("MainActivity", "Error: ${it.localizedMessage}") }
+            }
         }
     }
 

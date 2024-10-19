@@ -70,6 +70,7 @@ class RegisterActivity : ComponentActivity() {
                 uid = userId,
                 email = binding.editTextUserNameRegister.text.toString(),
                 userName = binding.editTextUserNameRegister.text.toString(),
+                status = "default",
                 profileImageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8YbZwjUWRYSAk3rTAE_IJU4fLzj2Fl_rczQ&s"
             )
             db.collection("Users")
