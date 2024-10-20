@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.example.kotlintrials.R
+import com.example.kotlintrials.Utils
 import com.example.kotlintrials.databinding.FragmentChatBinding
 import com.example.kotlintrials.mvvm.ChatAppViewModel
 import de.hdodenhof.circleimageview.CircleImageView
@@ -63,5 +64,9 @@ class ChatFragment : Fragment() {
         chatbinding.viewModel = chatAppViewModel
         chatbinding.lifecycleOwner = viewLifecycleOwner
 
+
+        chatbinding.sendBtn.setOnClickListener {
+            chatAppViewModel.sendMessage(Utils.getUidLoggedIn(), args.users.uid!!, args.users.userName!!, args.users.profileImageUrl!!, )
+        }
     }
 }

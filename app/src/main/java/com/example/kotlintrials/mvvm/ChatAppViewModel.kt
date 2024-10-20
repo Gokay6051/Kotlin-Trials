@@ -82,4 +82,49 @@ class ChatAppViewModel : ViewModel() {
                 }
         }*/
     }
+
+    //Send message
+    fun sendMessage(sender: String, receiver: String, friendName: String, friendImage: String) = viewModelScope.launch(Dispatchers.IO) {
+        val context = MyApplication.instance.applicationContext
+
+        val hashMap = hashMapOf<String, Any>(
+            "sender" to sender,
+            "receiver" to receiver,
+            "message" to message.value.toString(),
+            "time" to System.currentTimeMillis()
+        )
+
+        val uniqueId = listOf(sender, receiver).sorted()
+        uniqueId.joinToString("")
+
+        val friendsNameSplit = friendName.split("\\s".toRegex())[0]
+        val mySharedPrefs = SharedPrefs(context)
+        mySharedPrefs.setValue("friendId", receiver)
+        mySharedPrefs.setValue("chatRoomId", uniqueId.toString())
+        mySharedPrefs.setValue("friendName", friendsNameSplit)
+        mySharedPrefs.setValue("friendImage", friendImage)
+
+        //sending message
+        firestore.collection("Messages").document(uniqueId.toString()).collection("Chats")
+            .document(Utils.getTime())
+            .set(hashMap)
+            .addOnCompleteListener() { task ->
+                //all work for recent chats list
+                val hashMapForRecent = hashMapOf<String, Any>(
+                    "friendId" to receiver,
+                    "time" to Utils.getTime(),
+                    "sender" to Utils.getUidLoggedIn(),
+                    "message" to message.value.toString(),
+                    "friendsImage" to friendImage,
+                    "name" to friendName,
+                    "person" to "you"
+
+                )
+
+                //updates the last messages with the spoken user
+                firestore.collection("Conversation${Utils.getUidLoggedIn()}").document(receiver).set(hashMapForRecent)
+
+                firestore.collection("Conversation${receiver}").document(Utils.getUidLoggedIn()).update("message", message.value.toString(),  "time", Utils.getTime(), "person", name.value.toString())
+            }
+    }
 }
